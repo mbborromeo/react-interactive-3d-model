@@ -1,12 +1,13 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, useCallback, memo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useGLTF, OrbitControls } from '@react-three/drei';
 import { MeshPhongMaterial, TextureLoader, RepeatWrapping } from 'three';
 
 import { colors } from './data/colors'; // Note: some colors have a texture instead of color code
 
+const BASE_URL = import.meta.env.BASE_URL; // need for deployment
+
 const BACKGROUND_COLOR = '#f1f1f1';
-const BASE_URL = import.meta.env.BASE_URL;
 
 const INITIAL_MTL = new MeshPhongMaterial({
   color: BACKGROUND_COLOR,
@@ -21,7 +22,7 @@ const MAP_PARTS_TO_COLOURS = [
   {childID: 'back', mtl: INITIAL_MTL},
 ];
 
-const Model = (props) => {
+const Model = memo((props) => {
   // Enable shadow casting on the actual GLTF meshes.
   // gltf.scene is a group, so the real mesh children need castShadow = true.
   // Reference: https://medium.com/@pavlomiko/pavlo-s-keynotes-color-customizer-app-for-a-3d-model-with-react-three-fiber-570621e982ed
@@ -53,9 +54,9 @@ const Model = (props) => {
       castShadow
     />
   );
-};
+});
 
-const Floor = () => {
+const Floor = memo(() => {
   return (
     <mesh
       position={[0,-1,0]}
@@ -69,22 +70,11 @@ const Floor = () => {
       />
     </mesh>
   );
-};
+});
 
-const ColourButtons = ({model, part}) => {
-  const setMaterial = (material) => {
-    model.traverse((obj) => {
-      if (obj.isMesh && obj.nameID != null) {
-        if (obj.nameID == part) {
-          obj.material = material;
-        }
-      }
-    });
-  };
-
-  const handleClick = (i) => {
+const ColourButtons = memo(({model, part}) => {
+  const handleClick = useCallback((i) => {
     const colorObj = colors[parseInt(i)];
-
     let newMaterial;
 
     if(colorObj.texture){
@@ -105,8 +95,15 @@ const ColourButtons = ({model, part}) => {
       });
     }
     
-    setMaterial(newMaterial);
-  };
+    // set material to part of model
+    model.traverse((obj) => {
+      if (obj.isMesh && obj.nameID != null) {
+        if (obj.nameID == part) {
+          obj.material = newMaterial;
+        }
+      }
+    });
+  }, [model, part]);
 
   return colors.map((item, i) => {
     const backgroundStyle = item.texture
@@ -122,9 +119,9 @@ const ColourButtons = ({model, part}) => {
       ></div>
     );
   });
-};
+});
 
-const OptionButtons = ({ activeOption, onSelect }) => {
+const OptionButtons = memo(({ activeOption, onSelect }) => {
   return (
     <div className="options">
       {MAP_PARTS_TO_COLOURS.map((obj) => (
@@ -139,7 +136,7 @@ const OptionButtons = ({ activeOption, onSelect }) => {
       ))}
     </div>
   );
-};
+});
 
 export default function App() {
   // Reference JS tutorial: https://tympanus.net/codrops/2019/09/17/how-to-build-a-color-customizer-app-for-a-3d-model-with-three-js/
