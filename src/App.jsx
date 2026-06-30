@@ -6,6 +6,7 @@ import { MeshPhongMaterial, TextureLoader, RepeatWrapping } from 'three';
 import { colors } from './data/colors'; // Note: some colors have a texture instead of color code
 
 const BACKGROUND_COLOR = '#f1f1f1';
+const BASE_URL = import.meta.env.BASE_URL;
 
 const INITIAL_MTL = new MeshPhongMaterial({
   color: BACKGROUND_COLOR,
@@ -107,14 +108,20 @@ const ColourButtons = ({model, part}) => {
     setMaterial(newMaterial);
   };
 
-  return colors.map((item, i) => (
-    <div 
-      className="tray__swatch" 
-      style={ item.texture ? {backgroundImage: `url(${item.texture})`} : {background: `#${item.color}`} } 
-      key={`color-${i}`}
-      onClick={() => handleClick(i)}
-    ></div>
-  ));
+  return colors.map((item, i) => {
+    const backgroundStyle = item.texture
+      ? { backgroundImage: `url(${BASE_URL}${item.texture})` }
+      : { background: `#${item.color}` };
+
+    return (
+      <div 
+        className="tray__swatch" 
+        style={backgroundStyle} 
+        key={`color-${i}`}
+        onClick={() => handleClick(i)}
+      ></div>
+    );
+  });
 };
 
 const OptionButtons = ({ activeOption, onSelect }) => {
@@ -127,7 +134,7 @@ const OptionButtons = ({ activeOption, onSelect }) => {
           className={`option ${activeOption === obj.childID ? '--is-active' : ''}`}
           onClick={() => onSelect(obj.childID)}
         >
-          <img src={`/images/buttons/${obj.childID}.svg`} alt={obj.childID} />
+          <img src={`${BASE_URL}images/buttons/${obj.childID}.svg`} alt={obj.childID} />
         </div>
       ))}
     </div>
@@ -136,7 +143,7 @@ const OptionButtons = ({ activeOption, onSelect }) => {
 
 export default function App() {
   // Reference JS tutorial: https://tympanus.net/codrops/2019/09/17/how-to-build-a-color-customizer-app-for-a-3d-model-with-three-js/
-  const gltf = useGLTF('/model/chair.glb');
+  const gltf = useGLTF(`${BASE_URL}model/chair.glb`);
   const theModel = gltf.scene;
 
   const [activeOption, setActiveOption] = useState('legs');

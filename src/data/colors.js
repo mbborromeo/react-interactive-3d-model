@@ -1,11 +1,11 @@
 export const colors = [
   {
-    texture: '/images/textures/wood.jpg',
+    texture: 'images/textures/wood.jpg',
     size: [2,2,2],
     shininess: 60,
   },
   {
-    texture: '/images/textures/denim.jpg',
+    texture: 'images/textures/denim.jpg',
     size: [3, 3, 3],
     shininess: 0,
   },
