@@ -1,12 +1,13 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useGLTF, OrbitControls } from '@react-three/drei';
 import { MeshPhongMaterial, TextureLoader, RepeatWrapping } from 'three';
 
 import { colors } from './data/colors'; // Note: some colors have a texture instead of color code
 
+const BASE_URL = import.meta.env.BASE_URL; // need for deployment
+
 const BACKGROUND_COLOR = '#f1f1f1';
-const BASE_URL = import.meta.env.BASE_URL;
 
 const INITIAL_MTL = new MeshPhongMaterial({
   color: BACKGROUND_COLOR,
@@ -72,19 +73,8 @@ const Floor = () => {
 };
 
 const ColourButtons = ({model, part}) => {
-  const setMaterial = (material) => {
-    model.traverse((obj) => {
-      if (obj.isMesh && obj.nameID != null) {
-        if (obj.nameID == part) {
-          obj.material = material;
-        }
-      }
-    });
-  };
-
-  const handleClick = (i) => {
+  const handleClick = useCallback((i) => {
     const colorObj = colors[parseInt(i)];
-
     let newMaterial;
 
     if(colorObj.texture){
@@ -105,8 +95,15 @@ const ColourButtons = ({model, part}) => {
       });
     }
     
-    setMaterial(newMaterial);
-  };
+    // set material to part of model
+    model.traverse((obj) => {
+      if (obj.isMesh && obj.nameID != null) {
+        if (obj.nameID == part) {
+          obj.material = newMaterial;
+        }
+      }
+    });
+  }, [model, part]);
 
   return colors.map((item, i) => {
     const backgroundStyle = item.texture

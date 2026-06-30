@@ -21,7 +21,7 @@ Currently, two official plugins are available:
 ## To run
 `npm run dev`
 
-This will run on your localhost, [http://localhost:5173/](http://localhost:5173/)
+This will run on your localhost, [http://localhost:5173/react-interactive-3d-model/](http://localhost:5173/react-interactive-3d-model/)
 
 ## To Deploy to GitHub Pages
 
