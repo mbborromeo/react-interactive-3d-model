@@ -25,7 +25,7 @@ This will run on your localhost, [http://localhost:5173/](http://localhost:5173/
 
 ## To Deploy to GitHub Pages
 
-Merge a pull request onto 'main' branch. In the settings for Pages, make sure the source is set to 'Deploy from a branch' and specify the branch as 'gh-pages'. Also, in App.jsx, make sure you use import.meta.env.BASE_URL which specifies the relative project URL. All this will deploy the website to the live URL:
+Merge a pull request onto 'main' branch. In the settings for Pages, make sure the source is set to 'Deploy from a branch' and specify the branch as 'gh-pages'. Also, in App.jsx, make sure you use import.meta.env.BASE_URL which specifies the relative project URL. All this will deploy the site to the live URL:
 [https://mbborromeo.github.io/react-interactive-3d-model/](https://mbborromeo.github.io/react-interactive-3d-model/)
 
 ## React Compiler
