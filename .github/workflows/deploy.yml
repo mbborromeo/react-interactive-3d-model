@@ -45,6 +45,9 @@ jobs:
           name: production-files
           path: ./dist
 
+      - name: Copy nojekyll
+        run: cp .nojekyll dist/.nojekyll
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
