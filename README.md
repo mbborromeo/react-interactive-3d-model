@@ -36,6 +36,7 @@ If you are developing a production application, we recommend using TypeScript wi
 ## To Do
 - Set up ESlint
 - use React hooks for performance optimization
+- publish website on GitHub Pages
 - Add a loading graphic loop
 - On load, animate the model rotating 360 degrees one time, to hint to the user the model can be interactive with
 - Try importing a more complex 3D model such as an electric guitar with colour/texture options
