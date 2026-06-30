@@ -23,6 +23,11 @@ Currently, two official plugins are available:
 
 This will run on your localhost, [http://localhost:5173/](http://localhost:5173/)
 
+## To Deploy to GitHub Pages
+
+Merge a pull request onto 'main' branch. In the settings for Pages, make sure the source is set to 'Deploy from a branch' and specify the branch as 'gh-pages'. Also, in App.jsx, make sure you use import.meta.env.BASE_URL which specifies the relative project URL. All this will deploy the website to the live URL:
+[https://mbborromeo.github.io/react-interactive-3d-model/](https://mbborromeo.github.io/react-interactive-3d-model/)
+
 ## React Compiler
 
 The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
@@ -35,7 +40,6 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## To Do
 - use React hooks for performance optimization
-- publish website on GitHub Pages
 - Add a loading graphic loop
 - On load, animate the model rotating 360 degrees one time, to hint to the user the model can be interactive with
 - Try importing a more complex 3D model such as an electric guitar with colour/texture options
