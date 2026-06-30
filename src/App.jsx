@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState, useCallback } from 'react';
+import { Suspense, useEffect, useState, useCallback, memo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useGLTF, OrbitControls } from '@react-three/drei';
 import { MeshPhongMaterial, TextureLoader, RepeatWrapping } from 'three';
@@ -22,7 +22,7 @@ const MAP_PARTS_TO_COLOURS = [
   {childID: 'back', mtl: INITIAL_MTL},
 ];
 
-const Model = (props) => {
+const Model = memo((props) => {
   // Enable shadow casting on the actual GLTF meshes.
   // gltf.scene is a group, so the real mesh children need castShadow = true.
   // Reference: https://medium.com/@pavlomiko/pavlo-s-keynotes-color-customizer-app-for-a-3d-model-with-react-three-fiber-570621e982ed
@@ -54,9 +54,9 @@ const Model = (props) => {
       castShadow
     />
   );
-};
+});
 
-const Floor = () => {
+const Floor = memo(() => {
   return (
     <mesh
       position={[0,-1,0]}
@@ -70,9 +70,9 @@ const Floor = () => {
       />
     </mesh>
   );
-};
+});
 
-const ColourButtons = ({model, part}) => {
+const ColourButtons = memo(({model, part}) => {
   const handleClick = useCallback((i) => {
     const colorObj = colors[parseInt(i)];
     let newMaterial;
@@ -119,9 +119,9 @@ const ColourButtons = ({model, part}) => {
       ></div>
     );
   });
-};
+});
 
-const OptionButtons = ({ activeOption, onSelect }) => {
+const OptionButtons = memo(({ activeOption, onSelect }) => {
   return (
     <div className="options">
       {MAP_PARTS_TO_COLOURS.map((obj) => (
@@ -136,7 +136,7 @@ const OptionButtons = ({ activeOption, onSelect }) => {
       ))}
     </div>
   );
-};
+});
 
 export default function App() {
   // Reference JS tutorial: https://tympanus.net/codrops/2019/09/17/how-to-build-a-color-customizer-app-for-a-3d-model-with-three-js/
