@@ -1,23 +1,23 @@
-import { Suspense, useEffect, useState } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { useGLTF, OrbitControls } from '@react-three/drei'
-import { MeshPhongMaterial, TextureLoader, RepeatWrapping } from 'three'
+import { Suspense, useEffect, useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { useGLTF, OrbitControls } from '@react-three/drei';
+import { MeshPhongMaterial, TextureLoader, RepeatWrapping } from 'three';
 
-import { colors } from './data/colors' // Note: some colors have a texture instead of color code
+import { colors } from './data/colors'; // Note: some colors have a texture instead of color code
 
 const BACKGROUND_COLOR = '#f1f1f1';
 
 const INITIAL_MTL = new MeshPhongMaterial({
   color: BACKGROUND_COLOR,
-  shininess: 10 // To Fix: value doesn't seem to make a difference
+  shininess: 10, // To Fix: value doesn't seem to make a difference
 });
 
 const MAP_PARTS_TO_COLOURS = [
-  {childID: "legs", mtl: INITIAL_MTL},
-  {childID: "cushions", mtl: INITIAL_MTL},
-  {childID: "base", mtl: INITIAL_MTL},
-  {childID: "supports", mtl: INITIAL_MTL},
-  {childID: "back", mtl: INITIAL_MTL}
+  {childID: 'legs', mtl: INITIAL_MTL},
+  {childID: 'cushions', mtl: INITIAL_MTL},
+  {childID: 'base', mtl: INITIAL_MTL},
+  {childID: 'supports', mtl: INITIAL_MTL},
+  {childID: 'back', mtl: INITIAL_MTL},
 ];
 
 const Model = (props) => {
@@ -35,14 +35,14 @@ const Model = (props) => {
           object.nameID = part;
         }
       });
-    }
+    };
     
     if (props.model) {
-      for (let i of MAP_PARTS_TO_COLOURS) {
-          initColor(i.childID, i.mtl);
+      for (const i of MAP_PARTS_TO_COLOURS) {
+        initColor(i.childID, i.mtl);
       }
     }
-  }, [props.model])
+  }, [props.model]);
 
   return (
     <primitive 
@@ -51,35 +51,35 @@ const Model = (props) => {
       receiveShadow
       castShadow
     />
-  )
-}
+  );
+};
 
 const Floor = () => {
   return (
     <mesh
-        position={[0,-1,0]}
-        receiveShadow
-        rotation={[-0.5 * Math.PI, 0, 0]}
+      position={[0,-1,0]}
+      receiveShadow
+      rotation={[-0.5 * Math.PI, 0, 0]}
     >
-        <planeGeometry args={[5000,5000,1,1]} />
-        <meshPhongMaterial
-            color='#eeeeee'
-            shininess={0}
-        />
+      <planeGeometry args={[5000,5000,1,1]} />
+      <meshPhongMaterial
+        color='#eeeeee'
+        shininess={0}
+      />
     </mesh>
-  )
-}
+  );
+};
 
 const ColourButtons = ({model, part}) => {
   const setMaterial = (material) => {
     model.traverse((obj) => {
       if (obj.isMesh && obj.nameID != null) {
         if (obj.nameID == part) {
-            obj.material = material;
+          obj.material = material;
         }
       }
     });
-  }
+  };
 
   const handleClick = (i) => {
     const colorObj = colors[parseInt(i)];
@@ -94,18 +94,18 @@ const ColourButtons = ({model, part}) => {
       
       newMaterial = new MeshPhongMaterial( {
         map: textureSettings,
-        shininess: colorObj.shininess ? colorObj.shininess : 10
+        shininess: colorObj.shininess ? colorObj.shininess : 10,
       });    
     } 
     else {
       newMaterial = new MeshPhongMaterial({
         color: `#${colorObj.color}`,
-        shininess: colorObj.shininess ? colorObj.shininess : 10
+        shininess: colorObj.shininess ? colorObj.shininess : 10,
       });
     }
     
     setMaterial(newMaterial);
-  }
+  };
 
   return colors.map((item, i) => (
     <div 
@@ -114,8 +114,8 @@ const ColourButtons = ({model, part}) => {
       key={`color-${i}`}
       onClick={() => handleClick(i)}
     ></div>
-  ))
-}
+  ));
+};
 
 const OptionButtons = ({ activeOption, onSelect }) => {
   return (
@@ -131,13 +131,13 @@ const OptionButtons = ({ activeOption, onSelect }) => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
 export default function App() {
   // Reference JS tutorial: https://tympanus.net/codrops/2019/09/17/how-to-build-a-color-customizer-app-for-a-3d-model-with-three-js/
-  const gltf = useGLTF('/model/chair.glb')
-  const theModel = gltf.scene
+  const gltf = useGLTF('/model/chair.glb');
+  const theModel = gltf.scene;
 
   const [activeOption, setActiveOption] = useState('legs');
 
@@ -203,15 +203,15 @@ export default function App() {
         </div>
 
         <div id="js-tray" className="tray">
-            <div id="js-tray-slide" className="tray__slide">
-              <ColourButtons model={theModel} part={activeOption} />
-            </div>
+          <div id="js-tray-slide" className="tray__slide">
+            <ColourButtons model={theModel} part={activeOption} />
+          </div>
         </div>
       </div>
 
       <div className="options">
-          <OptionButtons activeOption={activeOption} onSelect={setActiveOption} />
+        <OptionButtons activeOption={activeOption} onSelect={setActiveOption} />
       </div>
     </>
-  )
+  );
 }
