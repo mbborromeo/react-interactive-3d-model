@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { useGLTF, OrbitControls } from '@react-three/drei';
 import { MeshPhongMaterial, TextureLoader, RepeatWrapping } from 'three';
 
-import { colors } from './data/colors'; // Note: some colors have a texture instead of color code
+import { colors } from './data/colors'; // Note: some use a texture instead of color code
 
 const BACKGROUND_COLOR = '#f1f1f1';
 const BASE_URL = import.meta.env.BASE_URL;
