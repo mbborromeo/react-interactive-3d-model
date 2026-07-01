@@ -22,7 +22,7 @@ const MAP_PARTS_TO_COLOURS = [
   {childID: 'back', mtl: INITIAL_MTL},
 ];
 
-const Model = memo((props) => {
+const Model = (props) => {
   // Enable shadow casting on the actual GLTF meshes.
   // gltf.scene is a group, so the real mesh children need castShadow = true.
   // Reference: https://medium.com/@pavlomiko/pavlo-s-keynotes-color-customizer-app-for-a-3d-model-with-react-three-fiber-570621e982ed
@@ -54,7 +54,7 @@ const Model = memo((props) => {
       castShadow
     />
   );
-});
+};
 
 const Floor = memo(() => {
   return (
@@ -121,7 +121,7 @@ const ColourButtons = memo(({model, part}) => {
   });
 });
 
-const OptionButtons = memo(({ activeOption, onSelect }) => {
+const OptionButtons = ({ activeOption, onSelect }) => {
   return (
     <div className="options">
       {MAP_PARTS_TO_COLOURS.map((obj) => (
@@ -136,7 +136,7 @@ const OptionButtons = memo(({ activeOption, onSelect }) => {
       ))}
     </div>
   );
-});
+};
 
 export default function App() {
   // Reference JS tutorial: https://tympanus.net/codrops/2019/09/17/how-to-build-a-color-customizer-app-for-a-3d-model-with-three-js/
